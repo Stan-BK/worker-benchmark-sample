@@ -13,64 +13,13 @@
       Test: (Only support function expression, Data is global variable passed
       before)
     </div>
-    <textarea id="testCaseTextArea">() => Data.find(i => i == 99)</textarea>
+    <textarea id="testCaseTextArea">() => Data.findIndex(i => i == 99)</textarea>
     <div>Benchmark: 1000 times</div>
     <div>
       Average execution time: <span id="avgTime" style="color: red">0ms</span>
     </div>
     <button id="btn">Start benchmark</button>
-    <script type="text/javascript">
-      function test(e) {
-        try {
-          const [data, testCase] = e.data.arguments;
-          console.log("Benchmark...");
-
-          const d = eval(data);
-          const func = eval(testCase);
-          globalThis.Data = d;
-          
-          if (func === undefined || typeof func !== "function") {
-            postMessage("Invalid test case");
-            return;
-          }
-
-          let warmupTime = 500;
-          let warmupTimes = 0;
-          const warmupStart = Date.now();
-          let avgTime = 0;
-          while (Date.now() - warmupStart < warmupTime) {
-            func(data);
-            warmupTimes++;
-          }
-
-          avgTime = (Date.now() - warmupStart) / warmupTimes;
-          postMessage(avgTime);
-        } catch (e) {
-          postMessage(e);
-          return;
-        }
-      }
-    </script>
-    <script type="text/javascript">
-      const blobUrl = `onmessage = ${test}`;
-      const blob = new Blob([blobUrl], { type: "text/javascript" });
-      const worker = new Worker(URL.createObjectURL(blob));
-
-      const avgTimeSpan = document.getElementById("avgTime");
-      const btn = document.getElementById("btn");
-      const dataTextArea = document.getElementById("dataTextArea");
-      const testCaseTextArea = document.getElementById("testCaseTextArea");
-      btn.addEventListener("click", () => {
-        avgTimeSpan.textContent = "Benchmarking...";
-        worker.postMessage({
-          arguments: [dataTextArea.value, testCaseTextArea.value],
-        });
-      });
-
-      worker.onmessage = (e) => {
-        const res = e.data;
-        avgTimeSpan.textContent = typeof res == "number" ? res + " ms" : res;
-      };
+    <script type="module" src="./index.js">
     </script>
   </body>
 </html>
