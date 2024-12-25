@@ -7,19 +7,38 @@
   </head>
   <body>
     <h1>Sample of Benchmark by Worker</h1>
-    <div>Data: (Only support literal expression)</div>
-    <textarea id="dataTextArea">[...Array(1000).keys()]</textarea>
-    <div>
-      Test: (Only support function expression, Data is global variable passed
-      before)
-    </div>
-    <textarea id="testCaseTextArea">() => Data.findIndex(i => i == 99)</textarea>
-    <div>Benchmark: 1000 times</div>
-    <div>
-      Average execution time: <span id="avgTime" style="color: red">0ms</span>
+    <div style="display: grid; grid-template-columns: 1fr 1fr;">
+      <div>
+        <h3>Test for Worker</h3>
+        <div>Data: (Only support literal expression)</div>
+        <textarea id="dataTextArea">[...Array(1000).keys()]</textarea>
+        <div>
+          Test: (Only support function expression, Data is global variable
+          passed before)
+        </div>
+        <textarea id="testCaseTextArea">() => Data.findIndex(i => i == 99)</textarea
+        >
+        <div>Benchmark: 1000 times</div>
+        <div>
+          Average execution time: <span id="avgTime" style="color: red">0ms</span>
+        </div>
+      </div>
+      <div>
+        <h3>Test for Worker + WASM</h3>
+        <div>Data: </div>
+        <textarea id="dataTextArea" disabled>[...Array(1000).keys()]</textarea>
+        <div>
+          Test: 
+        </div>
+        <textarea id="testCaseTextArea" disabled>() => Data.findIndex(i => i == 99)</textarea
+        >
+        <div>Benchmark: 1000 times</div>
+        <div>
+          Average execution time: <span id="assemblyAvgTime" style="color: red">0ms</span>
+        </div>
+      </div>
     </div>
     <button id="btn">Start benchmark</button>
-    <script type="module" src="./index.js">
-    </script>
+    <script type="module" src="./index.js"></script>
   </body>
 </html>
